@@ -1,6 +1,6 @@
 from TauFW.PicoProducer.storage.Sample import MC as M
 from TauFW.PicoProducer.storage.Sample import Data as D
-storage  = "/nfs/user/pmastra/DeepTau2p5/nano_noPreSel/UL2018_v2/$DAS" #"/eos/cms/store/group/phys_tau/TauFW/nanoV10/Run2_2018/$DAS" #None #"/eos/cms/store/group/phys_tau/TauFW/nano/UL2018/$DAS"
+storage  = "/nfs/user/pmastra/DeepTau2p5/nano/UL2018/$DAS" 
 url      = None #"root://cms-xrd-global.cern.ch/" #None #"root://eosuser.cern.ch/"
 filelist = None #"samples/files/UL2018/$SAMPLE.txt"
 samples  = [

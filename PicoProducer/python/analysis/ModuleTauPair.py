@@ -47,7 +47,8 @@ class ModuleTauPair(Module):
     self.dosys      = kwargs.get('sys',      self.dosys     ) # store fewer branches to save disk space
     self.dotight    = self.tes not in [1,None] or not self.dosys # tighten pre-selection to store fewer events
     self.dotight    = kwargs.get('tight',    self.dotight   ) # store fewer events to save disk space
-    self.dojec      = kwargs.get('jec',      True           ) and self.ismc #and self.year==2016 #False
+    # change to true after!!
+    self.dojec      = kwargs.get('jec',      False           ) and self.ismc #and self.year==2016 #False
     self.dojecsys   = kwargs.get('jecsys',   self.dojec     ) and self.ismc and self.dosys #and self.dojec #and False
     self.useT1      = kwargs.get('useT1',    False          ) # MET T1
     self.verbosity  = kwargs.get('verb',     0              ) # verbosity
@@ -59,7 +60,7 @@ class ModuleTauPair(Module):
     assert self.dtype in ['mc','data','embed'], "Did not recognize data type '%s'! Please choose from 'mc', 'data' and 'embed'."%self.dtype
     
     # YEAR-DEPENDENT IDs
-    self.met        = getmet(self.era,"nom" if self.dojec else "",useT1=self.useT1,verb=self.verbosity)
+    self.met        = getmet(self.era,"nom" if self.dojec else "") #-->UNCOMMENT THIS #,useT1=self.useT1,verb=self.verbosity)
     self.filter     = getmetfilters(self.era,self.isdata,verb=self.verbosity)
     
     # CORRECTIONS
@@ -405,10 +406,12 @@ class ModuleTauPair(Module):
     # MET
     self.out.met[0]       = met.Pt()
     self.out.metphi[0]    = met.Phi()
+    self.out.metsumet[0]  = event.MET_sumEt
     self.out.mt_1[0]      = sqrt( 2*self.out.pt_1[0]*met.Pt()*(1-cos(deltaPhi(self.out.phi_1[0],met.Phi()))) )
     self.out.mt_2[0]      = sqrt( 2*self.out.pt_2[0]*met.Pt()*(1-cos(deltaPhi(self.out.phi_2[0],met.Phi()))) )
-    ###self.out.puppimetpt[0]             = event.PuppiMET_pt
-    ###self.out.puppimetphi[0]            = event.PuppiMET_phi
+    self.out.puppimet[0]             = event.PuppiMET_pt
+    self.out.puppimetphi[0]            = event.PuppiMET_phi
+    self.out.puppimetsumet[0]            = event.PuppiMET_sumEt
     ###self.out.metsignificance[0]        = event.MET_significance
     ###self.out.metcov00[0]               = event.MET_covXX
     ###self.out.metcov01[0]               = event.MET_covXY
@@ -439,5 +442,5 @@ class ModuleTauPair(Module):
     self.out.dphi_ll[0]   = deltaPhi(self.out.phi_1[0], self.out.phi_2[0])
     self.out.deta_ll[0]   = abs(self.out.eta_1[0] - self.out.eta_2[0])
     self.out.chi[0]       = exp(abs(tau1.Rapidity() - tau2.Rapidity()))
-    
-
+   
+    self.out.ptvis_plus_met[0] = (tau1+tau2+met).Pt()

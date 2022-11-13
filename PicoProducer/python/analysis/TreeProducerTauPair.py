@@ -118,7 +118,12 @@ class TreeProducerTauPair(TreeProducer):
     
     self.addBranch('met',                 'f')
     self.addBranch('metphi',              'f')
-    
+    self.addBranch('metsumet',            'f')  
+  
+    self.addBranch('puppimet',                 'f')
+    self.addBranch('puppimetphi',              'f')
+    self.addBranch('puppimetsumet',            'f')
+
     if module.ismc:
       self.addBranch('genmet',            'f', -1)
       self.addBranch('genmetphi',         'f', -9)
@@ -138,6 +143,8 @@ class TreeProducerTauPair(TreeProducer):
     self.setAlias("m_ll","m_vis")
     self.setAlias("mvis","m_vis")
     
+    self.addBranch('ptvis_plus_met',      'f', title="Best estimate of dilepton pt (ptvis + ptmet")   
+ 
     self.addBranch('pzetavis',            'f', title="projection of visible ditau momentums onto bisector (zeta)")
     self.addBranch('pzetamiss',           'f', title="projection of MET onto zeta axis")
     self.addBranch('dzeta',               'f', title="pzetamiss-0.85*pzetavis")

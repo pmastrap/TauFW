@@ -27,8 +27,8 @@ class ModuleMuTau_DeepTau2p5_2p5Sel(ModuleTauPair):
       self.muonCutPt  = lambda e: 25 if e.HLT_IsoMu24 else 28
       self.muonCutEta = lambda e: 2.4
     else:
-      self.trigger    = lambda e: e.HLT_IsoMu24 or e.HLT_IsoMu27 #or e.HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1
-      self.muonCutPt  = lambda e: 25
+      self.trigger    = lambda e: e.HLT_IsoMu27 #e.HLT_IsoMu24 or e.HLT_IsoMu27 #or e.HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1
+      self.muonCutPt  = lambda e: 28
       self.muonCutEta = lambda e: 2.4
     self.tauCutPt     = 20
     self.tauCutEta    = 2.3

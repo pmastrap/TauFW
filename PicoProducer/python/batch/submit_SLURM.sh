@@ -5,7 +5,7 @@
 ####### the cpu time for this job
 #SBATCH --time 20:00:00
 ####### the maximum memory usage of this job
-#SBATCH --mem 18000M
+#SBATCH --mem 8000M
 ####### Job Name
 #SBATCH -J test
 ####### transfer environment variable from submission host

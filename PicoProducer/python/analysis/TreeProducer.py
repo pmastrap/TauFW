@@ -39,7 +39,7 @@ class TreeProducer(object):
     self.filename  = filename
     self.module    = module
     self.outfile   = TFile(filename,'RECREATE')
-    ncuts          = kwargs.get('ncuts',25)
+    ncuts          = kwargs.get('ncuts',80)
     self.cutflow   = Cutflow('cutflow',ncuts) if ncuts>0 else None
     self.display   = kwargs.get('display',True) # display cutflow at the end
     self.pileup    = TH1D('pileup', 'pileup', 100, 0, 100)

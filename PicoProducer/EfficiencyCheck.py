@@ -92,6 +92,6 @@ cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", colors)
 fig = sns.heatmap(df_2p1, annot=True, cbar=False).get_figure()
 fig.savefig("efficiencies_v2p1.png")
 
-fig = sns.heatmap(df_2p5, annot=True, cbar=False).get_figure()
-fig.savefig("efficiencies_v2p5.png")
+fig2 = sns.heatmap(df_2p5, annot=True, cbar=False).get_figure()
+fig2.savefig("efficiencies_v2p5.png")
 

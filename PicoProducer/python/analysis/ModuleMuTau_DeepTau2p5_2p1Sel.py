@@ -27,8 +27,8 @@ class ModuleMuTau_DeepTau2p5_2p1Sel(ModuleTauPair):
       self.muonCutPt  = lambda e: 25 if e.HLT_IsoMu24 else 28
       self.muonCutEta = lambda e: 2.4
     else:
-      self.trigger    = lambda e: e.HLT_IsoMu27 #e.HLT_IsoMu24 or e.HLT_IsoMu27  #or e.HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1
-      self.muonCutPt  = lambda e: 28
+      self.trigger    = lambda e: e.HLT_IsoMu24 or e.HLT_IsoMu27#e.HLT_IsoMu27 #or e.HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1
+      self.muonCutPt  = lambda e: 25
       self.muonCutEta = lambda e: 2.4
     self.tauCutPt     = 20
     self.tauCutEta    = 2.3
@@ -50,8 +50,9 @@ class ModuleMuTau_DeepTau2p5_2p1Sel(ModuleTauPair):
     self.out.cutflow.addcut('muon',         "muon"                       )
     self.out.cutflow.addcut('tau',          "tau"                        )
     self.out.cutflow.addcut('pair',         "pair"                       )
-    self.out.cutflow.addcut('muonveto',     "muon veto"                  )
-    self.out.cutflow.addcut('elecveto',     "electron veto"              )
+    #self.out.cutflow.addcut('muonveto',     "muon veto"                  )
+    #self.out.cutflow.addcut('elecveto',     "electron veto"              )
+    self.out.cutflow.addcut('lepvetoes',     "lep vetoes"              )
     self.out.cutflow.addcut('weight',       "no cut, weighted", 15       )
     self.out.cutflow.addcut('weight_no0PU', "no cut, weighted, PU>0", 16 ) # use for normalization
     
@@ -120,8 +121,8 @@ class ModuleMuTau_DeepTau2p5_2p1Sel(ModuleTauPair):
       if abs(tau.charge)!=1: continue
       #id cuts v2p1
       if tau.idDeepTau2017v2p1VSe<1: continue # VVVLoose
-      if tau.idDeepTau2017v2p1VSmu<1: continue # Medium
-      if tau.idDeepTau2017v2p1VSjet<1: continue # Medium 
+      if tau.idDeepTau2017v2p1VSmu<1: continue # VLoose
+      if tau.idDeepTau2017v2p1VSjet<1: continue # VVVLoose 
       if self.ismc:
         tau.es   = 1 # store energy scale for propagating to MET
         genmatch = tau.genPartFlav
@@ -178,11 +179,16 @@ class ModuleMuTau_DeepTau2p5_2p1Sel(ModuleTauPair):
     
 
     #cutflow on veto
-    if extramuon_veto: return False
-    self.out.cutflow.fill('muonveto')
-    if extraelec_veto: return False
-    self.out.cutflow.fill('elecveto')  
-    
+    if self.out.lepton_vetoes[0] and self.out.lepton_vetoes_notau[0]: return False
+    self.out.cutflow.fill('lepvetoes')
+    #if extramuon_veto: return False
+    #self.out.cutflow.fill('muonveto')
+    #if extraelec_veto: return False
+    #self.out.cutflow.fill('elecveto')  
+    #if dilepton_veto: return False
+    #self.out.cutflow.fill('dilepveto')
+   
+ 
     # EVENT
     self.fillEventBranches(event)
     
@@ -296,20 +302,20 @@ class ModuleMuTau_DeepTau2p5_2p1Sel(ModuleTauPair):
       #  self.out.idweight_medium_2[0] = self.tauSFsM.getSFvsPT(tau.pt)
       #  self.out.idweight_dm_2[0]     = self.tauSFsT_dm.getSFvsDM(tau.pt,tau.decayMode)
       #  if self.dosys:
-          #self.out.idweightUp_2[0]    = self.tauSFsT.getSFvsPT(tau.pt,unc='Up')
-          #self.out.idweightDown_2[0]  = self.tauSFsT.getSFvsPT(tau.pt,unc='Down')
-          #self.out.idweightUp_dm_2[0]   = self.tauSFsT_dm.getSFvsDM(tau.pt,tau.decayMode,unc='Up')
-          #self.out.idweightDown_dm_2[0] = self.tauSFsT_dm.getSFvsDM(tau.pt,tau.decayMode,unc='Down')
+      #    self.out.idweightUp_2[0]    = self.tauSFsT.getSFvsPT(tau.pt,unc='Up')
+      #    self.out.idweightDown_2[0]  = self.tauSFsT.getSFvsPT(tau.pt,unc='Down')
+      #    self.out.idweightUp_dm_2[0]   = self.tauSFsT_dm.getSFvsDM(tau.pt,tau.decayMode,unc='Up')
+      #    self.out.idweightDown_dm_2[0] = self.tauSFsT_dm.getSFvsDM(tau.pt,tau.decayMode,unc='Down')
       #elif tau.genPartFlav in [1,3]: # muon -> tau fake
       #  self.out.ltfweight_2[0]       = self.etfSFs.getSFvsEta(tau.eta,tau.genPartFlav)
       #  if self.dosys:
-          #self.out.ltfweightUp_2[0]   = self.etfSFs.getSFvsEta(tau.eta,tau.genPartFlav,unc='Up')
-          #self.out.ltfweightDown_2[0] = self.etfSFs.getSFvsEta(tau.eta,tau.genPartFlav,unc='Down')
+      #    self.out.ltfweightUp_2[0]   = self.etfSFs.getSFvsEta(tau.eta,tau.genPartFlav,unc='Up')
+      #    self.out.ltfweightDown_2[0] = self.etfSFs.getSFvsEta(tau.eta,tau.genPartFlav,unc='Down')
       #elif tau.genPartFlav in [2,4]: # electron -> tau fake
-        #self.out.ltfweight_2[0]       = self.mtfSFs.getSFvsEta(tau.eta,tau.genPartFlav)
-        #if self.dosys:
-          #self.out.ltfweightUp_2[0]   = self.mtfSFs.getSFvsEta(tau.eta,tau.genPartFlav,unc='Up')
-          #self.out.ltfweightDown_2[0] = self.mtfSFs.getSFvsEta(tau.eta,tau.genPartFlav,unc='Down')
+      #  self.out.ltfweight_2[0]       = self.mtfSFs.getSFvsEta(tau.eta,tau.genPartFlav)
+      #  if self.dosys:
+      #    self.out.ltfweightUp_2[0]   = self.mtfSFs.getSFvsEta(tau.eta,tau.genPartFlav,unc='Up')
+      #    self.out.ltfweightDown_2[0] = self.mtfSFs.getSFvsEta(tau.eta,tau.genPartFlav,unc='Down')
       self.out.weight[0]              = self.out.genweight[0]*self.out.puweight[0]*self.out.trigweight[0]*self.out.idisoweight_1[0] #*self.out.idisoweight_2[0]
     elif self.isembed:
       ###self.applyCommonEmbdedCorrections(event,jets,jetIds50,met,njets_vars,met_vars)

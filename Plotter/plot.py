@@ -99,7 +99,7 @@ def plot(sampleset,setup,parallel=True,tag="",extratext="",outdir="plots",era=""
   exts   = ['png','pdf'] if pdf else ['png'] # extensions
   for selection in selections:
     print ">>> Selection %r: %r"%(selection.title,selection.selection)
-    stacks = sampleset.getstack(variables,selection,method='QCD_OSSS',parallel=parallel)
+    stacks = sampleset.getstack(variables,selection,method='QCD_OSSS',scale=1, parallel=parallel)
     fname  = "%s/$VAR_%s-%s-%s$TAG"%(outdir,channel.replace('mu','m').replace('tau','t'),selection.filename,era)
     text   = "%s: %s"%(channel.replace('mu',"#mu").replace('tau',"#tau_{h}"),selection.title)
     if extratext:
@@ -111,6 +111,7 @@ def plot(sampleset,setup,parallel=True,tag="",extratext="",outdir="plots",era=""
       stack.drawtext(text)
       stack.saveas(fname,ext=exts,tag=tag)
       stack.close()
+
 
     #ratio plot between DeepTau 2.1 and 2.5
     for sample in sampleset.expsamples:
@@ -177,7 +178,7 @@ def plot(sampleset,setup,parallel=True,tag="",extratext="",outdir="plots",era=""
               plot.close(keep=True)
           deletehist(hists)
 
-          '''
+'''
       if "SingleMuon_Run2018" in str(sample):
         #jet
         print("var: ", variables[0].name)

@@ -22,6 +22,9 @@ baselineCuts: "q_1*q_2<0 && iso_1<0.15 && idDecayModeNewDMs_2 && !lepton_vetoes_
 #     - additional cross section scale factors applied to some processes need to be given in these regions to be considered --> adjust in scaleFactors section
 
 regions:
+    tightIdCut:
+        definition: "idDeepTau2018v2p5VSjet_2>=5 && idDeepTau2018v2p5VSe_2>=4 && idDeepTau2018v2p5VSmu_2>=4"
+        title: "Medium Jet, Loose Electron, Tight Mu"
     signalRegion: 
         definition: "mt_1<50"
         title: "signal region"

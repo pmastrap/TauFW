@@ -1,0 +1,52 @@
+##
+## Config file for default TES fit in mutau channel
+## contact: saskia.falke@cern.ch
+##
+
+# NOTE: In general, the main information (channel, baselineCuts, etc.) should be given.
+#       More specific sub-options (like weight replacement for systematic uncertainties) are optional
+#       These are used for the TES fit and are not needed for plotting only
+
+
+# Typically, each channel will have its own config file; combination can be done at datacard level
+channel: mutau_v10_2p5_wSF
+# Tag can be used to differentiate between scenarios
+tag: ""
+#medium VSjet, loose VVSe, tight VSmu
+baselineCuts: "q_1*q_2<0 && iso_1<0.15 && idDecayModeNewDMs_2 && !lepton_vetoes_notau && metfilter && idDeepTau2018v2p5VSjet_2>=5 && idDeepTau2018v2p5VSe_2>=2 && idDeepTau2018v2p5VSmu_2>=4 && mt_1<65"
+ 
+# These regions will be defined when creating inputs or making plots
+# At this point, they do not need to be exclusive; 
+# PLEASE NOTE:
+#     - which regions are included in the fit will be defined in obervables section --> adjust when changing regions
+#     - additional cross section scale factors applied to some processes need to be given in these regions to be considered --> adjust in scaleFactors section
+
+regions:
+    pt20to25:
+        definition: "pt_2 > 20 && pt_2 < 25"
+        title: "pt20to25"
+    pt25to30:
+        definition: "pt_2 > 25 && pt_2 < 30"
+        title: "pt25to30"
+    pt30to35:
+        definition: "pt_2 > 30 && pt_2 < 35"
+        title: "pt30to35"
+    pt35to40:
+        definition: "pt_2 > 35 && pt_2 < 40"
+        title: "pt35to40"
+    pt40to50:
+        definition: "pt_2 > 40 && pt_2 < 50"
+        title: "pt40to50"
+    pt50to60:
+        definition: "pt_2 > 50 && pt_2 < 60"
+        title: "pt50to60"
+    pt60to80:
+        definition: "pt_2 > 60 && pt_2 < 80"
+        title: "pt60to80"
+    pt80to100:
+        definition: "pt_2 > 80 && pt_2 < 100"
+        title: "pt80to100"
+    pt100to200:
+        definition: "pt_2 > 100 && pt_2 < 200"
+        title: "pt100to200"
+    

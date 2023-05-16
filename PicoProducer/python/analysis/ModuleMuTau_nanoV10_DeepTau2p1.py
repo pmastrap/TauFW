@@ -132,7 +132,7 @@ class ModuleMuTau_nanoV10_DeepTau2p1(ModuleTauPair):
           if self.tes!=None: # user-defined energy scale (for TES studies)
             tes = self.tes
           else: # (apply by default)
-            tes = self.tesTool.getTES(tau.pt,tau.decayMode,unc=self.tessys)
+            tes = 1#self.tesTool.getTES(tau.pt,tau.decayMode,unc=self.tessys)
           if tes!=1:
             tau.pt   *= tes
             tau.mass *= tes
@@ -220,7 +220,7 @@ class ModuleMuTau_nanoV10_DeepTau2p1(ModuleTauPair):
     self.out.dz_2[0]                       = tau.dz
     self.out.q_2[0]                        = tau.charge
     self.out.dm_2[0]                       = tau.decayMode
-    self.out.iso_2[0]                      = tau.rawIso
+    self.out.iso_2[0]                      = tau.rawDeepTau2017v2p1VSjet
     #self.out.idiso_2[0]                    = idIso(tau) # cut-based tau isolation (rawIso)
     #self.out.rawAntiEle_2[0]               = tau.rawAntiEle
     #self.out.rawMVAoldDM2017v2_2[0]        = tau.rawMVAoldDM2017v2

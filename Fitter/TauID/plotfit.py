@@ -154,15 +154,15 @@ def main(args):
   #graphs_prev = {}
   cols = [1,2,4]
   wpdict = { # average pt per pt bins
-      1:22.553480,
-      2:27.489354,
-      3:32.422438,
-      4:37.331050,
-      5:43.617665, 
-      6:56.683825,
-      7:99.550902,
-      8:140.393,
-      9:261.177,
+      1:22.5, #553480,
+      2:27.5, #489354,
+      3:32.5, #422438,
+      4:37.5, #331050,
+      5:45.0, #617665, 
+      6:55.5, #683825,
+      7:70.0, #550902,
+      8:90.0, #140.393,
+      9:150.0,#261.177,
       #'8':124,
       #'9':171,
       #'10':258,
@@ -187,10 +187,10 @@ def main(args):
   wprange[3] = {'low':30, 'up':35}
   wprange[4] = {'low':35, 'up':40}
   wprange[5] = {'low':40, 'up':50}
-  wprange[6] = {'low':50, 'up':70}
-  wprange[7] = {'low':70, 'up':200}
-  wprange[8] = {'low':100, 'up':200}
-  wprange[9] = {'low':200, 'up':500}
+  wprange[6] = {'low':50, 'up':60}
+  wprange[7] = {'low':60, 'up':80}
+  wprange[8] = {'low':80, 'up':100}
+  wprange[9] = {'low':100, 'up':200}
   #wprange['8'] = {'low':100, 'up':150}
   #wprange['9'] = {'low':150, 'up':200}
   #wprange['10'] = {'low':200, 'up':500}
@@ -204,7 +204,7 @@ def main(args):
   #for year in ['2016_preVFP', '2016_postVFP', '2017', '2018']:
   for year in ['UL2018']:
     counter = 0
-    for pt in ["20to25", "25to30", "30to35", "35to40", "40to50", "50to70", "70to2000"] :
+    for pt in ["20to25", "25to30", "30to35", "35to40", "40to50", "50to60", "60to80", "80to100", "100to200"] :
       counter+=1
       for wp in ['VVVLoose', 'VVLoose', 'VLoose', 'Loose', 'Medium', 'Tight', 'VTight', 'VVTight']:
         wplabel = year+'_'+wp
@@ -310,7 +310,7 @@ def main(args):
   start=20
   #start=50
   start_flat = 40
-  end=1000
+  end=200
   for idx, year in enumerate(year2draw):
     ensuredir('plots/sf_' + year)
     sfile = TFile('TauID_SF_pt_DeepTau2018v2p5VSjet_' + year + 'UL.root', 'recreate')
@@ -319,9 +319,9 @@ def main(args):
       wplabel = year+'_'+wp
       binlabel = year+'_'+wp#+'_dm'+dm
       canvas = TCanvas('canvas_' + year + '_' + wp)
-      canvas.SetLogx()
+      #canvas.SetLogx()
       ROOT.gStyle.SetOptStat(0)
-      frame =  TH2F('frame_' + year + '_' + wp, year + '_' + wp, len(wpdict),start,end,100,0.,1.5)
+      frame =  TH2F('frame_' + year + '_' + wp, year + '_' + wp, len(wpdict),start,end,100,0.80,1.10)
       frame.SetMinimum(0.5)
       frame.SetMaximum(1.)
       frame.GetYaxis().SetTitle('Scale Factor')
@@ -334,47 +334,49 @@ def main(args):
       #if idx==0: graphs[year + '_' + wp]['graph'].Draw('apl')
       #else: graphs[year + '_' + wp]['graph'].Draw('plsame')
       #  graphs[year + '_' + wp]['graph'].Draw('psame')
-      fg = copy.deepcopy(graphs[year + '_' + wp]['graph'])
-      fg.Fit('pol0', '', '', start_flat, 1000)
-      flat = fg.GetFunction('pol0')
-      flat.SetLineColor(2)
-      flat.SetLineWidth(2)
-      print 'flat:', '{0:.2f}'.format(flat.GetChisquare()), '{0:.2f}'.format(flat.GetNDF()), '{0:.2f}'.format(flat.GetProb())
-      red_flat = 1.
-      if flat.GetNDF()!=0:
-        red_flat = flat.GetChisquare()/flat.GetNDF()
-      band_up = abs(flat.GetParError(0))
-      band_down = abs(flat.GetParError(0))
-      cent = flat.GetParameter(0)
-      _x_ = Double(0.)
-      _y_ = Double(0.)
-      graphs[year + '_' + wp]['graph'].GetPoint(3,_x_,_y_)
-      print 'retrieve last bin SF = ', _y_, 'flat = ', cent
-      if _y_ < cent:
-        diff_down = (cent-_y_)/2.
-        band_down = math.sqrt(band_down*band_down + diff_down*diff_down)
-        print 'add in quadrature to the down side !!!', diff_down*2, band_down
-      else:
-        diff_up = (_y_ - cent)/2.
-        band_up = math.sqrt(band_up*band_up + diff_up*diff_up)
-        print 'add in quadrature to the up side !!!', diff_up*2, band_up
-      flat_up = TF1('flat_up', str(cent+band_up), start_flat, 500)
-      flat_down = TF1('flat_down', str(cent-band_down), start_flat, 500)
-      flat_up.SetLineColor(2)
-      flat_down.SetLineColor(2)  
-      flat_up.SetLineStyle(3)
-      flat_down.SetLineStyle(3)
-      slope_up = band_up/(end-500.)
-      slope_down = -band_down/(end-500.)
-      ext_up = str(slope_up) + '*(x-500) + ' + str(cent+band_up)
-      ext_down = str(slope_down) + '*(x-500) + ' + str(cent-band_down)
-      flat_up2 = TF1('flat_up2', ext_up, 500., 1000)
-      flat_down2 = TF1('flat_down2', ext_down, 500., 1000)
-      flat_up2.SetLineColor(2)
-      flat_down2.SetLineColor(2)
-      flat_up2.SetLineStyle(3)
-      flat_down2.SetLineStyle(3)
+      
+      #fg = copy.deepcopy(graphs[year + '_' + wp]['graph'])
+      #fg.Fit('pol0', '', '', start_flat, 1000)
+      #flat = fg.GetFunction('pol0')
+      #flat.SetLineColor(2)
+      #flat.SetLineWidth(2)
+      #print 'flat:', '{0:.2f}'.format(flat.GetChisquare()), '{0:.2f}'.format(flat.GetNDF()), '{0:.2f}'.format(flat.GetProb())
+      #red_flat = 1.
+      #if flat.GetNDF()!=0:
+      #  red_flat = flat.GetChisquare()/flat.GetNDF()
+      #band_up = abs(flat.GetParError(0))
+      #band_down = abs(flat.GetParError(0))
+      #cent = flat.GetParameter(0)
+      #_x_ = Double(0.)
+      #_y_ = Double(0.)
+      #graphs[year + '_' + wp]['graph'].GetPoint(3,_x_,_y_)
+      #print 'retrieve last bin SF = ', _y_, 'flat = ', cent
+      #if _y_ < cent:
+      #  diff_down = (cent-_y_)/2.
+      #  band_down = math.sqrt(band_down*band_down + diff_down*diff_down)
+      #  print 'add in quadrature to the down side !!!', diff_down*2, band_down
+      #else:
+      #  diff_up = (_y_ - cent)/2.
+      #  band_up = math.sqrt(band_up*band_up + diff_up*diff_up)
+      #  print 'add in quadrature to the up side !!!', diff_up*2, band_up
+      #flat_up = TF1('flat_up', str(cent+band_up), start_flat, 500)
+      #flat_down = TF1('flat_down', str(cent-band_down), start_flat, 500)
+      #flat_up.SetLineColor(2)
+      #flat_down.SetLineColor(2)  
+      #flat_up.SetLineStyle(3)
+      #flat_down.SetLineStyle(3)
+      #slope_up = band_up/(end-500.)
+      #slope_down = -band_down/(end-500.)
+      #ext_up = str(slope_up) + '*(x-500) + ' + str(cent+band_up)
+      #ext_down = str(slope_down) + '*(x-500) + ' + str(cent-band_down)
+      #flat_up2 = TF1('flat_up2', ext_up, 500., 1000)
+      #flat_down2 = TF1('flat_down2', ext_down, 500., 1000)
+      #flat_up2.SetLineColor(2)
+      #flat_down2.SetLineColor(2)
+      #flat_up2.SetLineStyle(3)
+      #flat_down2.SetLineStyle(3)
       frame.Draw()
+
       #if args.overlay:
       #  yearnew = year.replace('_preVFP', '').replace('_postVFP','')
       #  graphs_prev[yearnew + '_' + wp]['graph'].SetLineColor(tt)
@@ -388,16 +390,16 @@ def main(args):
       graphs[year + '_' + wp]['graph'].SetLineColor(1)
       graphs[year + '_' + wp]['graph'].SetMarkerColor(1)
       graphs[year + '_' + wp]['graph'].Draw('pzsame')
-      flat.Draw('lsame')
-      flat_up.Draw('lsame')
-      flat_down.Draw('lsame')
-      flat_up2.Draw('lsame')
-      flat_down2.Draw('lsame')
-      legend = TLegend(0.18, 0.2, 0.8, 0.3)
-      LegendSettings(legend)
-      leg_flat = 'UL: y = {0:.3f}'.format(flat.GetParameter(0)) + '^{+' + '{0:.3f}'.format(band_up) + '}_{-' + '{0:.3f}'.format(band_down) + '} (red. #chi^{2} = ' + '{0:.1f}'.format(red_flat) + ', prob. = ' + '{0:.2f}'.format(flat.GetProb()) + ')'
-      legend.AddEntry(flat, leg_flat , 'l')
-      legend.Draw()
+      #flat.Draw('lsame')
+      #flat_up.Draw('lsame')
+      #flat_down.Draw('lsame')
+      #flat_up2.Draw('lsame')
+      #flat_down2.Draw('lsame')
+      #legend = TLegend(0.18, 0.2, 0.8, 0.3)
+      #LegendSettings(legend)
+      #leg_flat = 'UL: y = {0:.3f}'.format(flat.GetParameter(0)) + '^{+' + '{0:.3f}'.format(band_up) + '}_{-' + '{0:.3f}'.format(band_down) + '} (red. #chi^{2} = ' + '{0:.1f}'.format(red_flat) + ', prob. = ' + '{0:.2f}'.format(flat.GetProb()) + ')'
+      #legend.AddEntry(flat, leg_flat , 'l')
+      #legend.Draw()
       
       canvas.Modified()
       canvas.Print('plots/sf_' + year + '/' + wp + '.gif')
@@ -408,30 +410,31 @@ def main(args):
       funcstr_up = '(x<=20)*0'
       funcstr_down = '(x<=20)*0'
       for ip, wpdir in wprange.iteritems():
-        if int(ip) >= 5: continue
+        #if int(ip) >= 5: continue
         funcstr += '+ ( x > ' + str(wpdir['low']) + ' && x <=' + str(wpdir['up']) + ')*' + str(returnsf(int(ip)-1, graphs[year + '_' + wp]['graph']))
         funcstr_up += '+ ( x > ' + str(wpdir['low']) + ' && x <=' + str(wpdir['up']) + ')*' + str(returnsf_up(int(ip)-1, graphs[year + '_' + wp]['graph']))
         funcstr_down += '+ ( x > ' + str(wpdir['low']) + ' && x <=' + str(wpdir['up']) + ')*' + str(returnsf_down(int(ip)-1, graphs[year + '_' + wp]['graph']))
-      funcstr += '+ (x > 40)*' + str(cent)
-      funcstr_up += '+ (x > 40 && x <= 500)*' + str(cent+band_up)
-      funcstr_up += '+ (x > 500 && x <= 1000)*(' + str(cent) + ' + ' + str(band_up) + '*(x/500.))'
-      funcstr_up += '+ (x > 1000)*(' + str(cent) + ' + ' + str(2*band_up) + ')'
-      #funcstr_up += '+ (x > 40)*' + str(cent)
-      funcstr_down += '+ (x > 40 && x <= 500)*' + str(cent-band_down)
-      funcstr_down += '+ (x > 500 && x <= 1000)*(' + str(cent) + ' - ' + str(band_down) + '*(x/500.))'
-      #funcstr_down += '+ (x > 1000)*2*' + str(cent - 2*band_down)
-      funcstr_down += '+ (x > 1000)*(' + str(cent) + ' - ' + str(2*band_down) + ')'
-      #funcstr_down += '+ (x > 40)*' + str(cent)
+#      funcstr += '+ (x > 40)*' + str(cent)
+#      funcstr_up += '+ (x > 40 && x <= 500)*' + str(cent+band_up)
+#      funcstr_up += '+ (x > 500 && x <= 1000)*(' + str(cent) + ' + ' + str(band_up) + '*(x/500.))'
+#      funcstr_up += '+ (x > 1000)*(' + str(cent) + ' + ' + str(2*band_up) + ')'
+#      #funcstr_up += '+ (x > 40)*' + str(cent)
+#      funcstr_down += '+ (x > 40 && x <= 500)*' + str(cent-band_down)
+#      funcstr_down += '+ (x > 500 && x <= 1000)*(' + str(cent) + ' - ' + str(band_down) + '*(x/500.))'
+#      #funcstr_down += '+ (x > 1000)*2*' + str(cent - 2*band_down)
+#      funcstr_down += '+ (x > 1000)*(' + str(cent) + ' - ' + str(2*band_down) + ')'
+#      #funcstr_down += '+ (x > 40)*' + str(cent)
       print funcstr
       print funcstr_up
       print funcstr_down
-      func_SF      = TF1(wp + '_cent', funcstr,     0,1000)
-      func_SF_up   = TF1(wp + '_up',   funcstr_up,  0,1000)
-      func_SF_down = TF1(wp + '_down', funcstr_down,0,1000)
+      func_SF      = TF1(wp + '_cent', funcstr,     0,200)
+      func_SF_up   = TF1(wp + '_up',   funcstr_up,  0,200)
+      func_SF_down = TF1(wp + '_down', funcstr_down,0,200)
       func_SF.Write()
       func_SF_up.Write()
       func_SF_down.Write()
       frame.Delete()
+     
     sfile.Write()
     sfile.Close()
   pullsVertical_noBonly(pulldirs)

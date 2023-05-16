@@ -6,7 +6,7 @@ from TauFW.PicoProducer.analysis.TreeProducerMuTau import *
 from TauFW.PicoProducer.analysis.ModuleTauPair import *
 from TauFW.PicoProducer.analysis.utils import LeptonTauPair, loosestIso, idIso, matchgenvistau, matchtaujet, filtermutau
 from TauFW.PicoProducer.corrections.MuonSFs import *
-#from TauFW.PicoProducer.corrections.TrigObjMatcher import loadTriggerDataFromJSON, TrigObjMatcher
+from TauFW.PicoProducer.corrections.TrigObjMatcher import loadTriggerDataFromJSON, TrigObjMatcher
 from TauPOG.TauIDSFs.TauIDSFTool import TauIDSFTool, TauESTool
 
 
@@ -37,6 +37,10 @@ class ModuleMuTau_nanoV10_DeepTau2p5(ModuleTauPair):
     if self.ismc:
       self.muSFs   = MuonSFs(era=self.era,verb=self.verbosity) # muon id/iso/trigger SFs
 
+    # TRIGGERS
+    jsonfile = os.path.join(datadir,"trigger/tau_triggers_%d.json"%(self.year))
+    self.trigger = TrigObjMatcher(jsonfile,trigger='SingleMuon',isdata=self.isdata)
+
       #Uncomment the following if you want to apply tau SFs and ES
       #self.tesTool = TauESTool(tauSFVersion[self.year]) # real tau energy scale corrections
     # #self.fesTool = TauFESTool(tauSFVersion[self.year]) # e -> tau fake negligible
@@ -52,6 +56,7 @@ class ModuleMuTau_nanoV10_DeepTau2p5(ModuleTauPair):
     self.out.cutflow.addcut('muon',         "muon"                       )
     self.out.cutflow.addcut('tau',          "tau"                        )
     self.out.cutflow.addcut('pair',         "pair"                       )
+    self.out.cutflow.addcut('leadTrig',     "leading muon triggered"     ) # ADDED FOR SF CROSS CHECKS
     #self.out.cutflow.addcut('muonveto',     "muon veto"                  )
     #self.out.cutflow.addcut('elecveto',     "electron veto"              )
     self.out.cutflow.addcut('lepvetoes',     "lep vetoes"              )
@@ -94,7 +99,8 @@ class ModuleMuTau_nanoV10_DeepTau2p5(ModuleTauPair):
     
     
     ##### TRIGGER ####################################
-    if not self.trigger(event):
+    #if not self.trigger(event):
+    if not self.trigger.fired(event):
       return False
     self.out.cutflow.fill('trig')
     
@@ -132,7 +138,7 @@ class ModuleMuTau_nanoV10_DeepTau2p5(ModuleTauPair):
           if self.tes!=None: # user-defined energy scale (for TES studies)
             tes = self.tes
           else: # (apply by default)
-            tes = self.tesTool.getTES(tau.pt,tau.decayMode,unc=self.tessys)
+            tes = 1#self.tesTool.getTES(tau.pt,tau.decayMode,unc=self.tessys)
           if tes!=1:
             tau.pt   *= tes
             tau.mass *= tes
@@ -172,6 +178,11 @@ class ModuleMuTau_nanoV10_DeepTau2p5(ModuleTauPair):
     tau.tlv   = tau.p4()
     self.out.cutflow.fill('pair')
     
+    # ADDED FOR SF CROSS CHECKS!
+    # Only keep events with muon triggered
+    if not self.trigger.match(event,muon): 
+      return False
+    self.out.cutflow.fill('leadTrig')
     
     # VETOS
     extramuon_veto, extraelec_veto, dilepton_veto = getlepvetoes(event,[ ],[muon],[tau],self.channel)
@@ -220,7 +231,7 @@ class ModuleMuTau_nanoV10_DeepTau2p5(ModuleTauPair):
     self.out.dz_2[0]                       = tau.dz
     self.out.q_2[0]                        = tau.charge
     self.out.dm_2[0]                       = tau.decayMode
-    self.out.iso_2[0]                      = tau.rawIso
+    self.out.iso_2[0]                      = tau.rawDeepTau2017v2p1VSjet
     #self.out.idiso_2[0]                    = idIso(tau) # cut-based tau isolation (rawIso)
     #self.out.rawAntiEle_2[0]               = tau.rawAntiEle
     #self.out.rawMVAoldDM2017v2_2[0]        = tau.rawMVAoldDM2017v2

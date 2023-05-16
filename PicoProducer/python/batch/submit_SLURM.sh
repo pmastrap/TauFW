@@ -3,9 +3,9 @@
 ####### partition/queue
 #SBATCH --partition standard
 ####### the cpu time for this job
-#SBATCH --time 05:30:00
+#SBATCH --time 01:20:00
 ####### the maximum memory usage of this job
-#SBATCH --mem 5500M
+#SBATCH --mem 5000M
 ####### Job Name
 #SBATCH -J test
 ####### transfer environment variable from submission host

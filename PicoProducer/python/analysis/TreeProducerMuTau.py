@@ -73,6 +73,66 @@ class TreeProducerMuTau(TreeProducerTauPair):
     self.addBranch('idDeepTau2018v2p5VSmu_2',    'i')
     self.addBranch('idDeepTau2018v2p5VSjet_2',   'i')
 
+    self.addBranch('tVVVLooseDeepTau2018v2p5VSjet_2',     '?')
+    self.addBranch('tVVVLooseDeepTau2018v2p5VSe_2',     '?')
+
+    self.addBranch('tVVLooseDeepTau2018v2p5VSjet_2',     '?')
+    self.addBranch('tVVLooseDeepTau2018v2p5VSe_2',     '?')
+
+    self.addBranch('tVLooseDeepTau2018v2p5VSjet_2',     '?')
+    self.addBranch('tVLooseDeepTau2018v2p5VSe_2',     '?')
+    self.addBranch('tVLooseDeepTau2018v2p5VSmu_2',     '?')
+
+    self.addBranch('tLooseDeepTau2018v2p5VSe_2',     '?')
+    self.addBranch('tLooseDeepTau2018v2p5VSjet_2',     '?')
+    self.addBranch('tLooseDeepTau2018v2p5VSmu_2',     '?')
+
+    self.addBranch('tMediumDeepTau2018v2p5VSe_2',     '?')
+    self.addBranch('tMediumDeepTau2018v2p5VSjet_2',     '?')
+    self.addBranch('tMediumDeepTau2018v2p5VSmu_2',     '?')
+
+    self.addBranch('tTightDeepTau2018v2p5VSe_2',     '?')
+    self.addBranch('tTightDeepTau2018v2p5VSjet_2',     '?')
+    self.addBranch('tTightDeepTau2018v2p5VSmu_2',     '?')
+
+    self.addBranch('tVTightDeepTau2018v2p5VSe_2',     '?')
+    self.addBranch('tVTightDeepTau2018v2p5VSjet_2',     '?')
+
+    self.addBranch('tVVTightDeepTau2018v2p5VSe_2',     '?')
+    self.addBranch('tVVTightDeepTau2018v2p5VSjet_2',     '?')
+    
+    self.addBranch('tVVVLooseDeepTau2017v2p1VSjet_2',     '?')
+    self.addBranch('tVVVLooseDeepTau2017v2p1VSe_2',     '?')
+
+    self.addBranch('tVVLooseDeepTau2017v2p1VSjet_2',     '?')
+    self.addBranch('tVVLooseDeepTau2017v2p1VSe_2',     '?')
+
+    self.addBranch('tVLooseDeepTau2017v2p1VSjet_2',     '?')
+    self.addBranch('tVLooseDeepTau2017v2p1VSe_2',     '?')
+    self.addBranch('tVLooseDeepTau2017v2p1VSmu_2',     '?')
+
+    self.addBranch('tLooseDeepTau2017v2p1VSe_2',     '?')
+    self.addBranch('tLooseDeepTau2017v2p1VSjet_2',     '?')
+    self.addBranch('tLooseDeepTau2017v2p1VSmu_2',     '?')
+
+    self.addBranch('tMediumDeepTau2017v2p1VSe_2',     '?')
+    self.addBranch('tMediumDeepTau2017v2p1VSjet_2',     '?')
+    self.addBranch('tMediumDeepTau2017v2p1VSmu_2',     '?')
+
+    self.addBranch('tTightDeepTau2017v2p1VSe_2',     '?')
+    self.addBranch('tTightDeepTau2017v2p1VSjet_2',     '?')
+    self.addBranch('tTightDeepTau2017v2p1VSmu_2',     '?')
+
+    self.addBranch('tVTightDeepTau2017v2p1VSe_2',     '?')
+    self.addBranch('tVTightDeepTau2017v2p1VSjet_2',     '?')
+
+    self.addBranch('tVVTightDeepTau2017v2p1VSe_2',     '?')
+    self.addBranch('tVVTightDeepTau2017v2p1VSjet_2',     '?')
+    
+   
+ 
+    self.addBranch('tHLT_IsoMu24',               '?')
+    self.addBranch('tHLT_IsoMu27',               '?')
 
     self.addBranch('leadTkPtOverTauPt_2',        'f')
     self.addBranch('chargedIso_2',               'f')

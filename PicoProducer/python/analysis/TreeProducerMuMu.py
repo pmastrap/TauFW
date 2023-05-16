@@ -12,6 +12,10 @@ class TreeProducerMuMu(TreeProducerTauPair):
     print "Loading TreeProducerMuMu for %r"%(filename)
     super(TreeProducerMuMu,self).__init__(filename,module,**kwargs)
     
+    self.addBranch('tHLT_IsoMu24',               '?')
+    self.addBranch('tHLT_IsoMu27',               '?')    
+    self.addBranch('triggerfired',               '?')
+    self.addBranch('leadtrig',                   '?')
     
     ##############
     #   MUON 1   #
@@ -87,4 +91,5 @@ class TreeProducerMuMu(TreeProducerTauPair):
       self.addBranch('genPartFlav_3',  'i', -1)
       self.addBranch('idisoweight_1',  'f', 1., title="muon ID/iso efficiency SF")
       self.addBranch('idisoweight_2',  'f', 1., title="muon ID/iso efficiency SF")
+      self.addBranch('weightTOT',      'f', 1., title="total MC weight"          )
     

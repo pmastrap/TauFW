@@ -7,7 +7,8 @@ set -e # exit when command fails
 #WPS="Loose Medium Tight"
 WPS="VVVLoose VVLoose VLoose Loose Medium Tight VTight VVTight"
 ERAS="#UL2016_preVFP #UL2016_postVFP #UL2017 UL2018"
-PTBINS="20to25 25to30 30to35 35to40 40to50 50to70 70to2000"
+#PTBINS="20to25 25to30 30to35 35to40 40to50 50to70 70to2000"
+PTBINS="20to25 25to30 30to35 35to40 40to50 50to60 60to80 80to100 100to200"
 DMBINS="0 1 10 11"
 DCPATH="input" # datacard path
 DOHARV=0

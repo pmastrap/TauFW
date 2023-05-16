@@ -383,19 +383,27 @@ class LeptonPair:
   
   def __gt__(self, opair):
     """Order dilepton pairs according to the pT of both objects first, then in isolation."""
-    if   self.pt1  != opair.pt1:  return self.pt1  > opair.pt1  # greater = higher pT
-    elif self.pt2  != opair.pt2:  return self.pt2  > opair.pt2  # greater = higher pT
-    elif self.iso1 != opair.iso1: return self.iso1 < opair.iso1 # greater = smaller isolation
-    elif self.iso2 != opair.iso2: return self.iso2 < opair.iso2 # greater = smaller isolation
+    #if   self.pt1  != opair.pt1:  return self.pt1  > opair.pt1  # greater = higher pT
+    #elif self.pt2  != opair.pt2:  return self.pt2  > opair.pt2  # greater = higher pT
+    #elif self.iso1 != opair.iso1: return self.iso1 < opair.iso1 # greater = smaller isolation
+    #elif self.iso2 != opair.iso2: return self.iso2 < opair.iso2 # greater = smaller isolation
+    if   self.iso1 != opair.iso1: return self.iso1 < opair.iso1 # greater = smaller lepton isolation
+    elif self.iso2 != opair.iso2: return self.iso2 < opair.iso2 # greater = larger lepton isolation
+    elif self.pt1  != opair.pt1:  return self.pt1  > opair.pt1  # greater = higher pT
+    elif self.pt2  != opair.pt2:  return self.pt2  > opair.pt2  # greater = higher pT 
     return True
   
 class LeptonTauPair(LeptonPair):
   def __gt__(self, opair):
     """Override for tau isolation."""
-    if   self.pt1  != opair.pt1:  return self.pt1  > opair.pt1  # greater = higher pT
-    elif self.pt2  != opair.pt2:  return self.pt2  > opair.pt2  # greater = higher pT
-    elif self.iso1 != opair.iso1: return self.iso1 < opair.iso1 # greater = smaller lepton isolation
+    #if   self.pt1  != opair.pt1:  return self.pt1  > opair.pt1  # greater = higher pT
+    #elif self.pt2  != opair.pt2:  return self.pt2  > opair.pt2  # greater = higher pT
+    #elif self.iso1 != opair.iso1: return self.iso1 < opair.iso1 # greater = smaller lepton isolation
+    #elif self.iso2 != opair.iso2: return self.iso2 > opair.iso2 # greater = larger tau isolation
+    if   self.iso1 != opair.iso1: return self.iso1 < opair.iso1 # greater = smaller lepton isolation
+    elif self.pt1  != opair.pt1:  return self.pt1  > opair.pt1  # greater = higher pT
     elif self.iso2 != opair.iso2: return self.iso2 > opair.iso2 # greater = larger tau isolation
+    elif self.pt2  != opair.pt2:  return self.pt2  > opair.pt2  # greater = higher pT
     return True
   
 class DiTauPair(LeptonPair):

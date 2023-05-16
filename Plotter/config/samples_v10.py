@@ -42,24 +42,24 @@ def getsampleset(channel,era,**kwargs):
       ( 'WJ', "W4JetsToLNu",           "W + 4J",               544.3, {"nevts" : 9130068}  ),
    
       #( 'VV', "WWTo1L1Nu2Q",           "WW",                    51.65,{"nevts" : 24232603.0} ),
-      ( 'VV', "WWTo2L2Nu",             "WW",                    11.09,{"nevts" : 9956710.0} ),
+      ( 'VV', "WWTo2L2Nu",             "WW",                    11.09,{"nevts" : 9956710.0 }  ),#110795280.393}),
       #( 'VV', "WWTo4Q",                "WW",                    51.03,{"nevts" : 24087772.0} ),
-      #( 'VV', "WZTo1L1Nu2Q",           "WZ",                    9.119,{"nevts" : 4262213.0} ),
-      ( 'VV', "WZTo2Q2L",              "WZ",                    6.419,{"nevts" : 17820214.0} ),
-      ( 'VV', "WZTo3LNu",              "WZ",                    5.213,{"nevts" : 6482815.0} ),
-      ( 'VV', "ZZTo2L2Nu",             "ZZ",                   0.6008,{"nevts" : 56766176.0} ),
-      ( 'VV', "ZZTo2Q2L",              "ZZ",                    3.676,{"nevts" : 19020772.0} ),
+      #( 'VV', "WZTo1L1Nu2Q",           "WZ",                    9.119,{"nevts" : 4262213.0}  ),
+      ( 'VV', "WZTo2Q2L",              "WZ",                    6.419,{"nevts" : 17820214.0}  ),#274146237.028}),
+      ( 'VV', "WZTo3LNu",              "WZ",                    5.213,{"nevts" : 6482815.0 }  ),#83145977.5623}),
+      ( 'VV', "ZZTo2L2Nu",             "ZZ",                   0.6008,{"nevts" : 56766176.0}  ),#55393059.2321}),
+      ( 'VV', "ZZTo2Q2L",              "ZZ",                    3.676,{"nevts" : 19020772.0}  ),#161924458.071}),
       #( 'VV', "ZZTo2Q2Nu",             "ZZ",                    4.057,{"nevts" : 12544560.0} ),
-      ( 'VV', "ZZTo4L",                "ZZ",                    1.325,{"nevts" : 98187568.0} ),
+      ( 'VV', "ZZTo4L",                "ZZ",                    1.325,{"nevts" : 98187568.0}  ),#131414241.629}),
       #( 'VV', "ZZTo4Q",                "ZZ",                    3.262,{"nevts" : 1047365.0} ),
 
-      ( 'TT', "TTTo2L2Nu",             "ttbar 2l2#nu",          88.29, {'extraweight': ttweight, "nevts" : 144831008} ),
-      ( 'TT', "TTToHadronic",          "ttbar hadronic",       377.96, {'extraweight': ttweight, "nevts" : 340284492.0} ),
-      ( 'TT', "TTToSemiLeptonic",      "ttbar semileptonic",   365.35, {'extraweight': ttweight, "nevts" : 475111154.0} ),
-      ( 'ST', "ST_t-channel_top",      "ST t-channel t",       136.02, {"nevts" : 167505220} ),
-      ( 'ST', "ST_t-channel_antitop",  "ST t-channel at",       80.95, {"nevts" : 90216506} ),
-      ( 'ST', "ST_tW_top",             "ST tW",                 35.85, {"nevts" : 11269836} ),
-      ( 'ST', "ST_tW_antitop",         "ST atW",                35.85, {"nevts" : 11015416} ),
+      ( 'TT', "TTTo2L2Nu",             "ttbar 2l2#nu",          88.29, {'extraweight': ttweight, "nevts" : 144831008}),#10528968535.6}),
+      ( 'TT', "TTToHadronic",          "ttbar hadronic",       377.96, {'extraweight': ttweight, "nevts" : 340284492.0}),#1.07688473208e+11}),
+      ( 'TT', "TTToSemiLeptonic",      "ttbar semileptonic",   365.35, {'extraweight': ttweight, "nevts" : 475111154.0}),#1.44128770267e+11}),
+      ( 'ST', "ST_t-channel_top",      "ST t-channel t",       136.02, {"nevts" : 167505220}), #19000619395.3}),
+      ( 'ST', "ST_t-channel_antitop",  "ST t-channel at",       80.95, {"nevts" : 90216506}), #6128118195.24}),
+      ( 'ST', "ST_tW_top",             "ST tW",                 35.85, {"nevts" : 11269836}), #365675749.161}),
+      ( 'ST', "ST_tW_antitop",         "ST atW",                35.85, {"nevts" : 11015416}), #358102373.391})
     ]
     #if 'mutau' in channel:
     #  expsamples.append(('DY',"DYJetsToMuTauh_M-50","DYJetsToMuTauh_M-50",5343.0,{'extraweight': dyweight})) # apply correct normalization in stitching
@@ -184,13 +184,14 @@ def getsampleset(channel,era,**kwargs):
   # SAMPLE SET
   if weight=="":
     weight = ""
+  
   #elif channel in ['mutau','etau']:
   if 'mutau' in channel or 'etau' in channel:
-    weight = "genweight/genweight*trigweight*puweight*idisoweight_1*idweight_2*ltfweight_2"
+    weight = "(genweight)/abs(genweight)*trigweight*puweight*idisoweight_1*idweight_2*ltfweight_2*idweight_medium_2"
   elif channel in ['tautau','ditau']:
     weight = "genweight*trigweight*puweight*idweight_1*idweight_2*ltfweight_1*ltfweight_2"
   else: # mumu, emu, ...
-    weight = "genweight/genweight*trigweight*puweight*idisoweight_1*idisoweight_2"
+    weight = "(genweight)/abs(genweight)*trigweight*puweight*idisoweight_1*idisoweight_2"
   for sf in rmsfs: # remove (old) SFs, e.g. for SF measurement
     weight = weight.replace(sf,"").replace("**","*").strip('*')
   for sf in addsfs:  # add extra SFs, e.g. for SF measurement

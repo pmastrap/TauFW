@@ -5,7 +5,7 @@
 import sys
 from collections import OrderedDict
 sys.path.append("../Plotter/") # for config.samples
-from config.samples import *
+from config.samples_v10 import *
 from TauFW.Plotter.plot.utils import LOG as PLOG
 from TauFW.Fitter.plot.datacard import createinputs, plotinputs
 import yaml
@@ -155,7 +155,7 @@ def main(args):
 
         if "mumu" in channel:
             varprocs = OrderedDict([
-                       ('Nom',      ['ZLL','W','VV','ST','TT','QCD','data_obs'])])
+                       ('Nom',      ['ZTT','ZL','ZJ', 'W','VV','ST','TT','QCD','data_obs'])])
         elif "mutau"in channel:
             varprocs = OrderedDict([
                        ('Nom',      ["ZTT","ZL","ZJ","W","VV","ST","TTT","TTL","TTJ","QCD","data_obs"])])

@@ -123,11 +123,11 @@ def main(args):
       
       else:
         
-        mvis = Var('m_vis', 30, 50, 200, fname='mvis', cbins={'pt_2>70':(15, 50, 200)})
+        mvis = Var('m_vis', 16, 40, 200, fname='mvis', cbins={'pt_2>70':(15, 50, 200)})
         #bins = range(50,120,5)+[120,140,160,200]
         observables = [
           #Var('dm_2==0 ? 0.13957 : m_2', "m_tau", 18, 0, 1.8, fname='mtau'),
-          Var('m_vis', 30, 50, 200, fname='mvis'),
+          Var('m_vis', 16, 40, 200, fname='mvis'),
           #Var('m_vis', 38, 10, 200, fname='mvis'), # broad range
           #Var('m_vis', 15, 50, 200, tag="_10"), # coarser binning
         ]
@@ -138,7 +138,7 @@ def main(args):
         #    instead of looping over many selection,
         #    also, each pt/DM bin will be a separate file
         dmbins = [0,1,10,11]
-        ptbins = [20,25,30,35,40,50,70,2000] #500,1000]
+        ptbins = [20.,25.,30.,35.,40.,50.,60.,80.,100.,200.]
         print ">>> DM cuts:"
         for dm in dmbins:
           dmcut = "pt_2>40 && dm_2==%d"%(dm) # tau pt > 40 for ditau triggers
@@ -181,7 +181,8 @@ def main(args):
         iso_1     = "iso_1<0.15"
         iso_2     = "idDecayModeNewDMs_2 && idDeepTau2018v2p5VSjet_2>=$WP && idDeepTau2018v2p5VSe_2>=2 && idDeepTau2018v2p5VSmu_2>=4"
         baseline  = "q_1*q_2<0 && %s && %s && !lepton_vetoes_notau && metfilter"%(iso_1,iso_2)
-        zttregion = "%s && mt_1<60 && dzeta>-25 && abs(deta_ll)<1.5"%(baseline)
+        zttregion = "%s && mt_1<65"%(baseline)
+        #"%s && mt_1<60 && dzeta>-25 && abs(deta_ll)<1.5"%(baseline)
         bins = [
           #Sel('baseline', repkey(baseline,WP=16)),
           #Sel('zttregion',repkey(zttregion,WP=16)),
